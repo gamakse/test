@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evergreen — 친환경 제품 구매 & 커뮤니티</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Noto Sans KR',sans-serif;background:#F5F7F6;color:#1B3A2C;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button,select,input,textarea{font-family:inherit;font-size:inherit;border:none;outline:none;background:none;cursor:pointer}
+img{max-width:100%;display:block}
+ul,ol{list-style:none}
+
+/* ═══════════════════════════════════════════
+   BRAND TOKENS
+═══════════════════════════════════════════ */
+:root{
+  /* Forest Green */
+  --pd:#1B3A2C; --p:#2D6A4F; --pm:#52B788; --pl:#74C69D; --pp:#D8F3DC;
+  /* Ocean Blue */
+  --sd:#1D3557; --s:#457B9D; --sm:#70C1C4; --sl:#A8DADC; --sp:#EBF8F9;
+  /* Sunshine Amber */
+  --a:#E9C46A; --ad:#C07C2A; --ak:#7A4A10; --al:#F4D47B; --ap:#FDF3D7;
+  /* Neutral */
+  --white:#fff; --black:#111;
+  --gray:#8a9e96; --lgray:#e8edeb; --bg:#F5F7F6;
+  /* Type */
+  --fd:'Gowun Batang',serif;
+  --fb:'Noto Sans KR',sans-serif;
+  --fa:'DM Serif Display',serif;
+  /* Radius */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px;
+  /* Shadow */
+  --sh-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.05);
+  --sh-md:0 4px 14px rgba(0,0,0,.09),0 2px 4px rgba(0,0,0,.05);
+  --sh-lg:0 10px 30px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.06);
+  /* Layout */
+  --max-w:1200px;
+  --hdr-h:64px;
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT UTILITIES
+═══════════════════════════════════════════ */
+.container{width:100%;max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ═══════════════════════════════════════════
+   HEADER / NAV
+═══════════════════════════════════════════ */
+.site-header{
+  position:sticky;top:0;z-index:200;
+  background:var(--pd);
+  height:var(--hdr-h);
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+}
+.header-inner{
+  height:var(--hdr-h);
+  display:flex;align-items:center;gap:28px;
+  max-width:var(--max-w);margin:0 auto;padding:0 24px;
+}
+.site-logo{
+  font-family:var(--fa);
+  font-size:20px;color:var(--white);
+  letter-spacing:-.02em;
+  display:flex;align-items:center;gap:7px;
+  white-space:nowrap;flex-shrink:0;
+}
+.site-logo svg{width:20px;height:20px;fill:var(--a);flex-shrink:0}
+.gnb{display:flex;gap:2px;flex:1;justify-content:center}
+.gnb-link{
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.65);
+  padding:0 14px;height:var(--hdr-h);
+  display:flex;align-items:center;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.gnb-link:hover,.gnb-link.active{color:var(--white);border-bottom-color:var(--a)}
+.header-tools{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:auto}
+.hdr-search{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:var(--r-sm);
+  padding:6px 12px;width:200px;
+  transition:background .15s,width .2s;
+}
+.hdr-search:focus-within{background:rgba(255,255,255,.18);width:240px}
+.hdr-search input{color:var(--white);font-size:12px;width:100%}
+.hdr-search input::placeholder{color:rgba(255,255,255,.45)}
+.hdr-search svg{width:14px;height:14px;fill:rgba(255,255,255,.55);flex-shrink:0}
+.hdr-icon-btn{
+  width:36px;height:36px;
+  border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.75);
+  font-size:18px;
+  position:relative;
+  transition:background .15s;
+}
+.hdr-icon-btn:hover{background:rgba(255,255,255,.1)}
+.hdr-badge{
+  position:absolute;top:2px;right:2px;
+  width:14px;height:14px;
+  background:var(--a);color:var(--ak);
+  font-size:8px;font-weight:700;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── GNB 드롭다운 ── */
+.gnb{display:flex;gap:0;flex:1;justify-content:center}
+.gnb-item{position:relative}
+.gnb-link .arrow{font-size:9px;color:var(--gray);transition:transform .2s;margin-top:1px}
+.gnb-item:hover .gnb-link .arrow{transform:rotate(180deg)}
+.gnb-dropdown{
+  visibility:hidden;
+  position:absolute;top:calc(var(--hdr-h) - 2px);left:50%;
+  transform:translateX(-50%) translateY(-8px);
+  background:#fff;
+  border:1px solid #e8edeb;
+  border-radius:var(--r-lg);
+  box-shadow:0 8px 32px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.05);
+  padding:8px;min-width:160px;z-index:300;
+  opacity:0;
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;
+  pointer-events:none;
+}
+.gnb-item:hover .gnb-dropdown{
+  visibility:visible;opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+.gnb-dropdown::before{content:'';position:absolute;top:-10px;left:0;right:0;height:10px}
+.gnb-dropdown a{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 14px;font-size:13px;
+  color:rgba(27,58,44,.7);border-radius:var(--r-md);
+  transition:background .12s,color .12s;white-space:nowrap;
+}
+.gnb-dropdown a:hover{background:var(--pp);color:var(--p)}
+.dm-dot{width:6px;height:6px;border-radius:50%;background:var(--pm);flex-shrink:0}
+
+/* Mobile menu btn */
+.hamburger{display:none;flex-direction:column;gap:5px;width:28px;padding:4px}
+.hamburger span{display:block;height:2px;background:rgba(255,255,255,.8);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.mobile-drawer{
+  display:none;
+  position:fixed;inset:var(--hdr-h) 0 0 0;
+  background:var(--pd);
+  z-index:190;
+  padding:24px;
+  flex-direction:column;gap:4px;
+  transform:translateX(100%);
+  transition:transform .25s ease;
+}
+.mobile-drawer.open{transform:translateX(0)}
+.drawer-link{
+  font-size:16px;font-weight:500;color:rgba(255,255,255,.8);
+  padding:14px 12px;
+  border-radius:var(--r-md);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  transition:background .15s;
+}
+.drawer-link:hover,.drawer-link.active{background:rgba(255,255,255,.08);color:var(--white)}
+
+/* ═══════════════════════════════════════════
+   PAGE SYSTEM (SPA-style)
+═══════════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(rgba(27,58,44,.52)),
+              url('https://images.unsplash.com/photo-1633878353697-f751870d1d76?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover no-repeat;
+  padding: 72px 0 64px;
+  position: relative; overflow: hidden;
+}
+.hero::before,.hero::after{
+  content:'';position:absolute;border-radius:50%;pointer-events:none;
+}
+.hero::before{width:480px;height:480px;background:var(--p);opacity:.3;right:-80px;top:-80px}
+.hero::after{width:280px;height:280px;background:var(--pm);opacity:.2;right:160px;bottom:-60px}
+.hero-inner{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--a);color:var(--ak);
+  font-size:11px;font-weight:700;
+  padding:4px 12px;border-radius:4px;
+  margin-bottom:14px;letter-spacing:.04em;
+}
+.hero-title{
+  font-family:var(--fd);
+  font-size:clamp(28px,4vw,48px);
+  font-weight:700;color:var(--white);
+  line-height:1.25;margin-bottom:14px;
+}
+.hero-sub{
+  font-size:15px;color:var(--pp);
+  margin-bottom:28px;max-width:430px;
+}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-hero-primary{
+  background:var(--a);color:var(--ak);
+  font-size:14px;font-weight:700;
+  padding:12px 26px;border-radius:var(--r-md);
+  transition:opacity .15s,transform .1s;
+}
+.btn-hero-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-hero-secondary{
+  background:rgba(255,255,255,.12);color:var(--white);
+  border:1px solid rgba(255,255,255,.25);
+  font-size:14px;font-weight:500;
+  padding:12px 24px;border-radius:var(--r-md);
+  transition:background .15s;
+}
+.btn-hero-secondary:hover{background:rgba(255,255,255,.18)}
+.hero-stats{display:flex;gap:28px;margin-top:28px}
+.hero-stat-val{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--a)}
+.hero-stat-lbl{font-size:11px;color:var(--pp)}
+.hero-deco{
+  display:flex;flex-direction:column;gap:14px;align-items:center;
+  position:relative;z-index:1;
+}
+.hero-deco-c{border-radius:50%}
+.hero-deco-c:nth-child(1){width:160px;height:160px;background:var(--pm);opacity:.35}
+.hero-deco-c:nth-child(2){width:100px;height:100px;background:var(--pl);opacity:.3;margin-left:40px}
+.hero-dots{display:flex;gap:6px;margin-top:16px}
+.hero-dot{width:7px;height:7px;border-radius:4px;background:rgba(255,255,255,.3)}
+.hero-dot.on{width:18px;background:var(--a)}
+
+/* ═══════════════════════════════════════════
+   CATEGORY SECTION
+═══════════════════════════════════════════ */
+.cat-section{
+  background:var(--white);
+  border-bottom:1px solid var(--pp);
+  padding:4px 0;
+  overflow-x:auto;          /* 가로 스크롤 활성화 */
+  scrollbar-width:thin;     /* 스크롤바 얇게 (Firefox) */
+  scrollbar-color:var(--pl) transparent;
+}
+.cat-section::-webkit-scrollbar{height:4px}           /* Chrome 스크롤바 높이 */
+.cat-section::-webkit-scrollbar-thumb{
+  background:var(--pl);border-radius:2px;
+}
+.cat-grid{
+  display:flex;
+  justify-content:center;   /* PC: 아이콘 중앙 정렬 */
+  gap:4px;padding:14px 0;
+  overflow-x:auto;          /* 폭이 좁아지면 가로 스크롤 */
+  scrollbar-width:thin;
+  scrollbar-color:var(--pl) transparent;
+}
+.cat-grid::-webkit-scrollbar{height:4px}
+.cat-grid::-webkit-scrollbar-thumb{background:var(--pl);border-radius:2px}
+.cat-item{
+  flex-shrink:0;            /* 아이콘이 찌그러지지 않도록 */
+  min-width:80px;
+}
+.cat-item:hover{background:var(--pp)}
+.cat-icon{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--pp);border:1px solid var(--pl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--p);
+  transition:background .15s,transform .15s;
+}
+.cat-item:hover .cat-icon{background:var(--pl);transform:scale(1.05)}
+.cat-name{font-size:11px;color:var(--pd);font-weight:500;text-align:center}
+
+/* ═══════════════════════════════════════════
+   SECTION LAYOUT
+═══════════════════════════════════════════ */
+.section{padding:40px 0}
+.section-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:20px;
+}
+.section-title{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--pd)}
+.section-more{
+  font-size:12px;color:var(--s);
+  display:flex;align-items:center;gap:4px;
+  transition:color .15s;
+}
+.section-more:hover{color:var(--p)}
+.divider{height:8px;background:var(--bg)}
+
+/* ═══════════════════════════════════════════
+   PRODUCT CARDS
+═══════════════════════════════════════════ */
+.prod-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.prod-card{
+  background:var(--white);
+  border-radius:var(--r-lg);
+  border:1px solid var(--sl);
+  overflow:hidden;
+  box-shadow:var(--sh-sm);
+  transition:box-shadow .2s,transform .2s;
+  cursor:pointer;
+}
+.prod-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px)}
+.prod-img{
+  width:100%;aspect-ratio:1;
+  background:var(--sp);
+  display:flex;align-items:center;justify-content:center;
+  font-size:44px;
+  border-bottom:1px solid var(--pp);
+  position:relative;overflow:hidden;
+}
+.prod-badge-wrap{position:absolute;bottom:8px;left:8px}
+.eco-tag{
+  display:inline-block;font-size:10px;font-weight:700;
+  background:var(--pp);color:var(--p);
+  padding:2px 7px;border-radius:3px;
+}
+.prod-body{padding:12px 14px}
+.prod-name{
+  font-size:13px;color:var(--pd);font-weight:500;
+  margin-bottom:3px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.prod-brand{font-size:11px;color:var(--s);margin-bottom:6px}
+.prod-price-row{display:flex;align-items:center;gap:5px}
+.pct{font-size:12px;font-weight:700;color:var(--ad)}
+.price{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--pd)}
+.orig{font-size:11px;color:var(--gray);text-decoration:line-through}
+
+/* ═══════════════════════════════════════════
+   COMMUNITY CARDS
+═══════════════════════════════════════════ */
+.comm-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.comm-card{
+  background:var(--white);
+  border-radius:var(--r-lg);
+  border:1px solid var(--sl);
+  padding:16px;
+  box-shadow:var(--sh-sm);
+  transition:box-shadow .2s,transform .2s;
+  cursor:pointer;
+}
+.comm-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.comm-cat{
+  display:inline-block;font-size:10px;font-weight:700;
+  background:var(--sp);color:var(--sd);
+  padding:2px 7px;border-radius:3px;margin-bottom:8px;
+}
+.comm-title{
+  font-size:14px;font-weight:500;color:var(--pd);
+  line-height:1.5;margin-bottom:8px;
+}
+.comm-meta{display:flex;gap:10px;font-size:11px;color:var(--s)}
+
+.prod-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCT DETAIL PAGE
+═══════════════════════════════════════════ */
+.pd-layout{
+  display:grid;
+  grid-template-columns:480px 1fr;
+  gap:48px;
+  padding:32px 0;
+}
+.pd-gallery{}
+.pd-main-img{
+  width:100%;aspect-ratio:1;
+  background:var(--sp);
+  border-radius:var(--r-xl);
+  border:1px solid var(--sl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:120px;margin-bottom:12px;
+  overflow:hidden;
+}
+.pd-thumbs{display:flex;gap:8px}
+.pd-thumb{
+  width:64px;height:64px;
+  background:var(--sp);
+  border-radius:var(--r-md);
+  border:2px solid transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;cursor:pointer;
+  transition:border-color .15s;
+}
+.pd-thumb:hover{border-color:var(--pm)}
+.pd-thumb.active{border-color:var(--p)}
+.pd-info{display:flex;flex-direction:column;gap:14px;padding-top:8px}
+.eco-badges{display:flex;gap:6px;flex-wrap:wrap}
+.eco-badge{
+  font-size:10px;font-weight:700;
+  background:var(--pp);color:var(--p);
+  padding:3px 9px;border-radius:3px;
+  border:1px solid var(--pl);
+}
+.pd-brand{font-size:13px;color:var(--s)}
+.pd-name{
+  font-family:var(--fd);
+  font-size:clamp(20px,2.5vw,28px);
+  font-weight:700;color:var(--pd);
+  line-height:1.25;
+}
+.pd-rating{display:flex;align-items:center;gap:7px}
+.stars{color:var(--ad);font-size:16px;letter-spacing:1px}
+.rating-val{font-size:15px;font-weight:700;color:var(--pd)}
+.rating-cnt{font-size:12px;color:var(--s)}
+.price-block{
+  background:var(--pp);
+  border-radius:var(--r-md);
+  border:1px solid var(--pl);
+  padding:16px;
+}
+.price-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.disc-badge{
+  background:var(--a);color:var(--ak);
+  font-size:11px;font-weight:700;
+  padding:3px 8px;border-radius:3px;
+}
+.deadline-tag{font-size:11px;font-weight:700;color:var(--ad)}
+.sale-price{font-family:var(--fd);font-size:32px;font-weight:700;color:var(--pd);line-height:1.1}
+.orig-price{font-size:13px;color:var(--gray);text-decoration:line-through;margin-top:3px}
+.option-section{display:flex;flex-direction:column;gap:8px}
+.opt-title{font-size:12px;font-weight:500;color:var(--sd)}
+.opt-btns{display:flex;gap:8px;flex-wrap:wrap}
+.opt-btn{
+  font-size:12px;padding:7px 16px;
+  border:1px solid var(--sl);
+  border-radius:var(--r-sm);
+  background:var(--white);color:var(--sd);
+  transition:all .15s;
+}
+.opt-btn:hover{border-color:var(--pm);background:var(--pp)}
+.opt-btn.active{border-color:var(--p);background:var(--pp);color:var(--p);font-weight:500}
+.qty-section{display:flex;align-items:center;gap:12px}
+.qty-label{font-size:12px;font-weight:500;color:var(--sd)}
+.qty-ctrl{
+  display:flex;
+  border:1px solid var(--pl);
+  border-radius:var(--r-sm);
+  overflow:hidden;
+}
+.qty-btn{
+  width:36px;height:36px;
+  background:var(--pp);color:var(--p);
+  font-size:18px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.qty-btn:hover{background:var(--pl)}
+.qty-val{
+  width:44px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:500;color:var(--pd);
+  border-left:1px solid var(--pl);border-right:1px solid var(--pl);
+}
+.qty-stock{font-size:11px;color:var(--s)}
+.pd-actions{display:flex;gap:10px}
+.btn-buy{
+  flex:1;padding:14px;
+  background:var(--a);color:var(--ak);
+  border-radius:var(--r-md);
+  font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:opacity .15s,transform .1s;
+  box-shadow:0 4px 14px rgba(233,196,106,.35);
+}
+.btn-buy:hover{opacity:.9;transform:translateY(-1px)}
+.btn-cart{
+  flex:1;padding:14px;
+  background:var(--white);color:var(--p);
+  border:2px solid var(--p);border-radius:var(--r-md);
+  font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:background .15s;
+}
+.btn-cart:hover{background:var(--pp)}
+.btn-wish{
+  width:52px;height:52px;
+  border:1px solid var(--sl);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:var(--s);
+  transition:background .15s,color .15s;
+}
+.btn-wish:hover{background:var(--sp);color:var(--p)}
+.btn-wish.on{color:#e55;border-color:#e55}
+
+/* Product tabs */
+.pd-tabs{margin-top:40px}
+.tab-nav{
+  display:flex;
+  border-bottom:1px solid var(--pp);
+  margin-bottom:0;
+}
+.tab-btn{
+  padding:12px 24px;
+  font-size:13px;color:var(--s);
+  border-bottom:2px solid transparent;
+  transition:all .15s;white-space:nowrap;
+}
+.tab-btn:hover{color:var(--p)}
+.tab-btn.active{color:var(--p);border-bottom-color:var(--p);font-weight:700}
+.tab-panel{display:none;padding:24px 0}
+.tab-panel.active{display:block}
+.eco-metrics{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-bottom:24px;
+}
+.eco-metric{
+  background:var(--pp);border-radius:var(--r-md);
+  border:1px solid var(--pl);
+  padding:18px;text-align:center;
+}
+.eco-val{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--p);margin-bottom:4px}
+.eco-lbl{font-size:11px;color:var(--pd)}
+.rev-summary{display:flex;gap:24px;align-items:flex-start;margin-bottom:24px}
+.rev-big{font-family:var(--fd);font-size:56px;font-weight:700;color:var(--pd);line-height:1}
+.rev-bars{flex:1;display:flex;flex-direction:column;gap:7px}
+.rev-row{display:flex;align-items:center;gap:8px}
+.rev-stars-sm{font-size:12px;color:var(--ad);width:48px;flex-shrink:0}
+.rev-bar-bg{flex:1;height:6px;background:var(--pp);border-radius:3px}
+.rev-bar-fill{height:6px;background:var(--a);border-radius:3px}
+.rev-n{font-size:11px;color:var(--s);width:28px;text-align:right}
+.rev-card{
+  border:1px solid var(--pp);border-radius:var(--r-md);
+  padding:16px;margin-bottom:12px;
+}
+.rev-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.rev-user{font-size:13px;font-weight:700;color:var(--pd);display:flex;align-items:center;gap:6px}
+.rev-verified{font-size:10px;background:var(--pp);color:var(--p);padding:1px 6px;border-radius:2px;font-weight:700}
+.rev-date{font-size:11px;color:var(--s)}
+.rev-text{font-size:13px;color:var(--sd);line-height:1.6}
+
+/* ═══════════════════════════════════════════
+   COMMUNITY PAGE
+═══════════════════════════════════════════ */
+.comm-page-layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:32px;
+  padding:32px 0;
+}
+.comm-sidebar{
+  position:sticky;top:calc(var(--hdr-h) + 16px);
+  align-self:start;
+}
+.write-btn{
+  width:100%;
+  background:var(--a);color:var(--ak);
+  border-radius:var(--r-md);
+  padding:11px;
+  font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-bottom:18px;
+  transition:opacity .15s,transform .1s;
+  box-shadow:0 4px 12px rgba(233,196,106,.3);
+}
+.write-btn:hover{opacity:.9;transform:translateY(-1px)}
+.sidebar-title{
+  font-size:11px;font-weight:700;
+  color:var(--s);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:8px;
+}
+.sidebar-menu{display:flex;flex-direction:column;gap:1px;margin-bottom:16px}
+.sidebar-item{
+  font-size:13px;padding:8px 12px;
+  border-radius:var(--r-md);color:var(--sd);
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background .1s;cursor:pointer;
+}
+.sidebar-item:hover{background:var(--sp)}
+.sidebar-item.active{background:var(--pp);color:var(--p);font-weight:700}
+.sidebar-cnt{
+  font-size:10px;padding:2px 7px;
+  border-radius:8px;background:var(--sp);color:var(--s);
+}
+.sidebar-item.active .sidebar-cnt{background:var(--pl);color:var(--pd)}
+.sidebar-divider{height:1px;background:var(--pp);margin:14px 0}
+.tag-pills{display:flex;flex-wrap:wrap;gap:6px}
+.tag-pill{
+  font-size:11px;background:var(--sp);color:var(--sd);
+  padding:4px 9px;border-radius:10px;
+  border:1px solid var(--sl);
+  cursor:pointer;transition:background .1s;
+}
+.tag-pill:hover{background:var(--sl)}
+.comm-main{}
+.comm-toolbar{
+  display:flex;gap:10px;align-items:center;
+  margin-bottom:14px;
+}
+.toolbar-search{
+  flex:1;display:flex;align-items:center;gap:8px;
+  border:1px solid var(--sl);border-radius:var(--r-md);
+  padding:9px 14px;background:var(--white);
+  transition:border-color .15s;
+}
+.toolbar-search:focus-within{border-color:var(--pm)}
+.toolbar-search input{flex:1;font-size:13px;color:var(--pd)}
+.toolbar-search input::placeholder{color:var(--gray)}
+.sort-select{
+  border:1px solid var(--sl);border-radius:var(--r-md);
+  padding:8px 12px;font-size:12px;color:var(--sd);
+  background:var(--white);
+  transition:border-color .15s;
+}
+.sort-select:focus{border-color:var(--pm)}
+.notice-item{
+  background:var(--pp);border:1px solid var(--pl);
+  border-radius:var(--r-md);
+  padding:10px 16px;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.notice-tag{
+  font-size:10px;font-weight:700;
+  background:var(--p);color:var(--white);
+  padding:2px 7px;border-radius:3px;flex-shrink:0;
+}
+.notice-title{font-size:13px;color:var(--pd);font-weight:700;flex:1}
+.notice-date{font-size:11px;color:var(--p)}
+.post-list{display:flex;flex-direction:column;gap:2px}
+.post-item{
+  background:var(--white);
+  border:1px solid var(--pp);border-radius:var(--r-lg);
+  padding:16px 18px;
+  display:flex;gap:14px;
+  cursor:pointer;
+  transition:box-shadow .15s,transform .1s;
+  margin-bottom:8px;
+}
+.post-item:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.post-body{flex:1;min-width:0}
+.post-tags{display:flex;gap:5px;margin-bottom:6px}
+.p-cat{
+  font-size:10px;font-weight:700;
+  background:var(--sp);color:var(--sd);
+  padding:2px 7px;border-radius:3px;
+}
+.p-new{
+  font-size:10px;font-weight:700;
+  background:var(--ap);color:var(--ad);
+  padding:2px 7px;border-radius:3px;
+}
+.post-title{
+  font-size:15px;font-weight:700;color:var(--pd);
+  line-height:1.4;margin-bottom:5px;
+}
+.post-excerpt{
+  font-size:12px;color:var(--sd);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  margin-bottom:10px;
+}
+.post-foot{display:flex;align-items:center;justify-content:space-between}
+.post-author{display:flex;align-items:center;gap:6px}
+.author-av{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--sp);border:1px solid var(--sl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;color:var(--sd);font-weight:500;
+}
+.author-name{font-size:11px;color:var(--s)}
+.post-stats{display:flex;gap:12px;font-size:11px;color:var(--s)}
+.post-stat{display:flex;align-items:center;gap:3px}
+.post-thumb{
+  width:80px;height:80px;flex-shrink:0;
+  border-radius:var(--r-md);
+  background:var(--sp);border:1px solid var(--sl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;align-self:flex-start;
+}
+.pagination{
+  display:flex;gap:5px;justify-content:center;
+  padding:16px 0;
+}
+.page-btn{
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-sm);
+  font-size:13px;
+  border:1px solid var(--pp);color:var(--sd);
+  transition:all .15s;
+}
+.page-btn.active{background:var(--p);color:var(--white);border-color:var(--p)}
+.page-btn:hover:not(.active){background:var(--pp)}
+
+/* ═══════════════════════════════════════════
+   BREADCRUMB
+═══════════════════════════════════════════ */
+.breadcrumb{
+  padding:10px 0;
+  font-size:12px;color:var(--s);
+  display:flex;align-items:center;gap:5px;
+  border-bottom:1px solid var(--pp);margin-bottom:0;
+}
+.breadcrumb-sep{color:var(--gray)}
+.breadcrumb-cur{color:var(--pd);font-weight:500}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.site-footer{
+  background:var(--pd);
+  padding:40px 0 24px;
+  margin-top:60px;
+}
+.footer-inner{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;margin-bottom:36px;
+}
+.footer-brand{font-family:var(--fa);font-size:20px;color:var(--white);margin-bottom:12px}
+.footer-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.7;max-width:260px}
+.footer-col-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+.footer-link{display:block;font-size:12px;color:rgba(255,255,255,.45);padding:4px 0;transition:color .15s}
+.footer-link:hover{color:var(--white)}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;
+}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.3)}
+.footer-sns{display:flex;gap:10px}
+.sns-btn{
+  width:30px;height:30px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:rgba(255,255,255,.5);
+  transition:background .15s,color .15s;
+}
+.sns-btn:hover{background:var(--a);color:var(--ak)}
+
+/* ═══════════════════════════════════════════
+   MOBILE BOTTOM NAV
+═══════════════════════════════════════════ */
+.mobile-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--white);
+  border-top:1px solid var(--pp);
+  z-index:180;
+}
+.mobile-nav-inner{display:flex}
+.mnav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;padding:8px 0 10px;
+  font-size:9px;color:var(--gray);
+  transition:color .15s;cursor:pointer;
+}
+.mnav-item.active{color:var(--p);font-weight:500}
+.mnav-icon{font-size:20px}
+
+/* ═══════════════════════════════════════════
+   SHOP PAGE
+═══════════════════════════════════════════ */
+
+/* ── 상단 바 ── */
+.shop-topbar{
+  border-bottom:1px solid var(--lgray);
+  background:#fff;
+  padding:0;
+}
+.shop-topbar-inner{
+  display:flex;align-items:center;gap:0;
+  height:48px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.shop-topbar-inner::-webkit-scrollbar{display:none}
+.shop-cat-tab{
+  padding:0 18px;height:48px;
+  display:flex;align-items:center;
+  font-size:13px;color:var(--gray);
+  border-bottom:2px solid transparent;
+  white-space:nowrap;flex-shrink:0;
+  transition:color .15s,border-color .15s;
+  cursor:pointer;
+}
+.shop-cat-tab:hover{color:var(--pd)}
+.shop-cat-tab.active{color:var(--p);border-bottom-color:var(--p);font-weight:700}
+
+/* ── 본문 레이아웃 ── */
+.shop-layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:0;
+  min-height:calc(100vh - var(--hdr-h) - 48px);
+  align-items:start;
+}
+
+/* ── 필터 사이드바 ── */
+.shop-filter{
+  border-right:1px solid var(--lgray);
+  background:#fff;
+  padding:20px 0;
+  position:sticky;
+  top:calc(var(--hdr-h) + 48px);
+  max-height:calc(100vh - var(--hdr-h) - 48px);
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--lgray) transparent;
+}
+.shop-filter::-webkit-scrollbar{width:4px}
+.shop-filter::-webkit-scrollbar-thumb{background:var(--lgray);border-radius:2px}
+
+.filter-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px 14px;
+}
+.filter-title{font-size:15px;font-weight:700;color:var(--pd)}
+.filter-reset{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;color:var(--gray);
+  transition:color .15s;cursor:pointer;
+}
+.filter-reset:hover{color:var(--p)}
+.filter-reset svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* 필터 섹션 */
+.filter-section{border-top:1px solid var(--lgray);padding:16px 20px}
+.filter-section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;cursor:pointer;
+}
+.filter-section-title{font-size:13px;font-weight:700;color:var(--pd)}
+.filter-toggle-icon{
+  font-size:11px;color:var(--gray);
+  transition:transform .2s;
+}
+.filter-section.collapsed .filter-toggle-icon{transform:rotate(180deg)}
+.filter-section.collapsed .filter-body{display:none}
+
+/* 체크박스 필터 아이템 */
+.filter-item{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 0;cursor:pointer;
+}
+.filter-item:hover .filter-label{color:var(--p)}
+.filter-check{
+  width:16px;height:16px;flex-shrink:0;
+  border:1.5px solid #cdd7d2;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.filter-item.checked .filter-check{
+  background:var(--p);border-color:var(--p);
+}
+.filter-item.checked .filter-check::after{
+  content:'';width:9px;height:5px;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(-45deg) translate(1px,-1px);
+  display:block;
+}
+.filter-label{font-size:13px;color:rgba(27,58,44,.75);transition:color .15s;flex:1}
+.filter-count{font-size:11px;color:var(--gray)}
+
+/* 가격 범위 슬라이더 */
+.price-range-wrap{padding-top:4px}
+.price-inputs{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.price-input-box{
+  flex:1;display:flex;align-items:center;
+  border:1px solid #dce8e2;border-radius:var(--r-sm);
+  padding:6px 10px;background:#f8faf9;
+  font-size:12px;color:var(--pd);
+  transition:border-color .15s;
+}
+.price-input-box:focus-within{border-color:var(--pm);background:#fff}
+.price-input-box input{
+  width:100%;font-size:12px;color:var(--pd);
+  background:transparent;
+}
+.price-sep{font-size:12px;color:var(--gray);flex-shrink:0}
+.price-apply-btn{
+  width:100%;margin-top:6px;
+  background:var(--p);color:#fff;
+  border-radius:var(--r-sm);padding:7px;
+  font-size:12px;font-weight:500;
+  transition:opacity .15s;
+}
+.price-apply-btn:hover{opacity:.85}
+
+/* 더보기 링크 */
+.filter-more{
+  font-size:12px;color:var(--s);
+  display:flex;align-items:center;gap:3px;
+  margin-top:8px;cursor:pointer;
+  transition:color .15s;
+}
+.filter-more:hover{color:var(--p)}
+
+/* ── 상품 영역 ── */
+.shop-main{padding:16px 24px;background:var(--bg)}
+
+/* 결과 툴바 */
+.shop-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;flex-wrap:wrap;gap:10px;
+}
+.shop-result-count{
+  font-size:14px;color:var(--pd);
+}
+.shop-result-count strong{font-weight:700}
+.shop-sort-tabs{
+  display:flex;align-items:center;gap:0;
+}
+.sort-tab{
+  font-size:12px;color:var(--gray);
+  padding:4px 10px;
+  border-right:1px solid var(--lgray);
+  cursor:pointer;transition:color .15s;
+  white-space:nowrap;
+}
+.sort-tab:last-child{border-right:none}
+.sort-tab:hover{color:var(--pd)}
+.sort-tab.active{color:var(--p);font-weight:700}
+
+/* 상품 그리드 */
+.shop-prod-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+/* 쇼핑 상품 카드 */
+.sp-card{
+  background:#fff;
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  border:1px solid var(--lgray);
+  box-shadow:var(--sh-sm);
+  transition:box-shadow .2s,transform .15s;
+  cursor:pointer;
+}
+.sp-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.sp-img-wrap{
+  position:relative;
+  aspect-ratio:1;
+  background:#f4f7f5;
+  overflow:hidden;
+}
+.sp-img-wrap img{
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform .3s;
+}
+.sp-card:hover .sp-img-wrap img{transform:scale(1.04)}
+.sp-img-wrap .sp-emoji{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:52px;
+}
+/* 이미지 위 뱃지 */
+.sp-badge{
+  position:absolute;top:10px;left:10px;
+  background:var(--p);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:3px;
+  line-height:1.3;
+}
+.sp-badge.amber{background:var(--a);color:var(--ak)}
+.sp-badge.red{background:#e55;color:#fff}
+.sp-badge.blue{background:var(--s);color:#fff}
+
+/* 장바구니 버튼 — 이미지 하단 오버레이 */
+.sp-cart-btn{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.95);
+  border-top:1px solid var(--lgray);
+  padding:9px 14px;
+  font-size:13px;color:var(--pd);font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  opacity:0;
+  transform:translateY(4px);
+  transition:opacity .18s,transform .18s;
+}
+.sp-card:hover .sp-cart-btn{opacity:1;transform:translateY(0)}
+
+/* 찜 버튼 */
+.sp-wish{
+  position:absolute;top:10px;right:10px;
+  width:30px;height:30px;
+  background:rgba(255,255,255,.9);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;color:var(--gray);
+  box-shadow:0 1px 4px rgba(0,0,0,.12);
+  transition:color .15s,background .15s;
+  cursor:pointer;
+}
+.sp-wish:hover,.sp-wish.on{color:#e55;background:#fff}
+
+/* 상품 정보 */
+.sp-body{padding:12px 14px}
+.sp-delivery{font-size:10px;color:var(--s);margin-bottom:3px;font-weight:500}
+.sp-name{
+  font-size:13px;color:var(--pd);font-weight:500;
+  line-height:1.45;margin-bottom:2px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.sp-desc{
+  font-size:11px;color:var(--gray);
+  margin-bottom:6px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.sp-price-row{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.sp-orig{font-size:11px;color:#bbb;text-decoration:line-through}
+.sp-pct{font-size:13px;font-weight:700;color:#e55}
+.sp-price{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--pd)}
+.sp-review{font-size:10px;color:var(--gray);margin-top:4px;display:flex;align-items:center;gap:3px}
+.sp-review-stars{color:var(--a);font-size:10px}
+
+/* 페이지네이션 */
+.shop-pagination{
+  display:flex;justify-content:center;align-items:center;
+  gap:4px;padding:32px 0 16px;
+}
+.pg-btn{
+  width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-sm);
+  font-size:13px;border:1px solid var(--lgray);
+  color:var(--sd);transition:all .15s;cursor:pointer;
+  background:#fff;
+}
+.pg-btn.active{background:var(--p);color:#fff;border-color:var(--p)}
+.pg-btn:hover:not(.active){background:var(--pp);border-color:var(--pl)}
+.pg-btn.arrow{font-size:15px;color:var(--gray)}
+
+/* 모바일 필터 버튼 */
+.shop-filter-toggle-btn{
+  display:none;
+  align-items:center;gap:6px;
+  background:#fff;border:1px solid var(--lgray);
+  border-radius:var(--r-md);
+  padding:7px 14px;font-size:13px;color:var(--pd);
+  box-shadow:var(--sh-sm);
+}
+/* 필터 드로어 오버레이 (모바일) */
+.filter-overlay{
+  display:none;
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:250;
+}
+.filter-overlay.open{display:block}
+.shop-filter-drawer{
+  position:fixed;left:0;top:0;bottom:0;
+  width:280px;background:#fff;
+  z-index:260;
+  transform:translateX(-100%);
+  transition:transform .25s ease;
+  overflow-y:auto;
+  padding:20px 0;
+}
+.shop-filter-drawer.open{transform:translateX(0)}
+.filter-drawer-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px 16px;border-bottom:1px solid var(--lgray);margin-bottom:8px;
+}
+.filter-drawer-close{
+  font-size:20px;color:var(--gray);width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+
+/* Tablet 744–1024 */
+@media(max-width:1024px){
+  :root{--hdr-h:56px}
+  .hdr-search{width:160px}
+  .hdr-search:focus-within{width:200px}
+  .prod-grid{grid-template-columns:repeat(3,1fr)}
+  .comm-grid{grid-template-columns:repeat(2,1fr)}
+  .pd-layout{grid-template-columns:360px 1fr;gap:32px}
+  .footer-inner{grid-template-columns:2fr 1fr 1fr;gap:28px}
+  .footer-inner .footer-col:last-child{display:none}
+  .cat-grid{grid-template-columns:repeat(8,1fr)}
+  /* shop */
+  .shop-layout{grid-template-columns:190px 1fr}
+  .shop-prod-grid{grid-template-columns:repeat(3,1fr);gap:12px}
+}
+
+/* Mobile ≤744 */
+@media(max-width:744px){
+  :root{--hdr-h:52px}
+  .hamburger{display:flex}
+  .gnb{display:none}
+  .hdr-search{display:none}
+  .mobile-nav{display:block}
+  .mobile-drawer{display:flex}
+  body{padding-bottom:60px}
+  .container{padding:0 16px}
+  .hero{padding:36px 0 32px}
+  .hero-inner{grid-template-columns:1fr;gap:0}
+  .hero-deco{display:none}
+  .hero-title{font-size:24px}
+  .hero-stats{gap:20px}
+  .cat-grid{
+    grid-template-columns:repeat(4,1fr);
+    overflow-x:auto;
+    display:flex;
+    padding:12px 0;
+    gap:8px;
+    scrollbar-width:none;
+  }
+  .cat-grid::-webkit-scrollbar{display:none}
+  .cat-item{min-width:72px}
+  .cat-icon{width:42px;height:42px;font-size:17px}
+  .cat-name{font-size:10px}
+  .section{padding:24px 0}
+  .section-title{font-size:16px}
+  .prod-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+  .comm-grid{grid-template-columns:1fr}
+  /* product detail */
+  .pd-layout{grid-template-columns:1fr;gap:0}
+  .pd-main-img{border-radius:0;font-size:80px;border:none}
+  .pd-thumbs{padding:10px 16px}
+  .pd-info{padding:16px}
+  .pd-name{font-size:20px}
+  .sale-price{font-size:26px}
+  .pd-actions{flex-direction:column;gap:8px}
+  .btn-wish{width:100%;height:44px}
+  /* community */
+  .comm-page-layout{grid-template-columns:1fr;gap:0}
+  .comm-sidebar{
+    position:static;
+    display:none;
+  }
+  .comm-sidebar.visible{display:block}
+  .write-btn{display:none}
+  .post-title{font-size:14px}
+  .post-excerpt{-webkit-line-clamp:2}
+  /* shop */
+  .shop-layout{grid-template-columns:1fr}
+  .shop-filter{display:none;position:static;max-height:none;border-right:none}
+  .shop-filter-toggle-btn{display:flex}
+  .shop-prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .shop-main{padding:12px 14px}
+  .shop-topbar-inner{padding:0 14px}
+  .sp-cart-btn{opacity:1;transform:none}
+  /* footer */
+  .site-footer{margin-top:32px}
+  .footer-inner{grid-template-columns:1fr;gap:20px}
+  .footer-inner .footer-col:not(:first-child){display:none}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+}
+
+@media(max-width:480px){
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .eco-metrics{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:80px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--pd);color:var(--white);
+  font-size:13px;font-weight:500;
+  padding:10px 20px;border-radius:var(--r-md);
+  box-shadow:var(--sh-lg);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;
+  z-index:300;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-logo" href="#" onclick="goPage('main');return false">
+      <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 008 20C19 20 22 3 22 3c-1 2-8 2-8 2z"/></svg>
+      Evergreen
+    </a>
+    <nav class="gnb">
+      <!-- 메인 -->
+      <div class="gnb-item">
+        <a class="gnb-link active" href="#" data-page="main" onclick="goPage('main');return false">메인</a>
+      </div>
+      <!-- 쇼핑 -->
+      <div class="gnb-item">
+        <a class="gnb-link" href="#" data-page="shop" onclick="goPage('shop');return false">
+          쇼핑 <span class="arrow">▾</span>
+        </a>
+        <div class="gnb-dropdown">
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>생활용품</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>식품</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>뷰티</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>패션</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>가전</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>DIY</a>
+          <a href="#" onclick="goPage('shop');return false"><span class="dm-dot"></span>유아동</a>
+        </div>
+      </div>
+      <!-- 커뮤니티 -->
+      <div class="gnb-item">
+        <a class="gnb-link" href="#" data-page="community" onclick="goPage('community');return false">
+          커뮤니티 <span class="arrow">▾</span>
+        </a>
+        <div class="gnb-dropdown">
+          <a href="#" onclick="goPage('community');return false"><span class="dm-dot"></span>전체</a>
+          <a href="#" onclick="goPage('community');return false"><span class="dm-dot"></span>사용후기</a>
+          <a href="#" onclick="goPage('community');return false"><span class="dm-dot"></span>친환경 팁</a>
+          <a href="#" onclick="goPage('community');return false"><span class="dm-dot"></span>Q&amp;A</a>
+          <a href="#" onclick="goPage('community');return false"><span class="dm-dot"></span>자유게시판</a>
+        </div>
+      </div>
+      <!-- 마이페이지 -->
+      <div class="gnb-item">
+        <a class="gnb-link" href="#">마이페이지</a>
+      </div>
+    </nav>
+    <div class="header-tools">
+      <div class="hdr-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" placeholder="친환경 상품 검색">
+      </div>
+      <button class="hdr-icon-btn" onclick="showToast('장바구니 페이지로 이동합니다')">
+        <i class="fa-solid fa-basket-shopping"></i><span class="hdr-badge">2</span>
+      </button>
+      <button class="hdr-icon-btn" onclick="showToast('알림 페이지로 이동합니다')"><i class="fa-solid fa-bell"></i></button>
+      <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="메뉴">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<nav class="mobile-drawer" id="mobileDrawer">
+  <a class="drawer-link active" href="#" onclick="goPage('main');closeDrawer();return false">🏠 메인</a>
+  <a class="drawer-link" href="#" onclick="goPage('product');closeDrawer();return false">🛍️ 상품</a>
+  <a class="drawer-link" href="#" onclick="goPage('community');closeDrawer();return false">💬 커뮤니티</a>
+  <a class="drawer-link" href="#">👤 마이페이지</a>
+  <a class="drawer-link" href="#">❤️ 찜 목록</a>
+  <a class="drawer-link" href="#">📦 주문 내역</a>
+</nav>
+
+<!-- ═══════════════ MAIN PAGE ═══════════════ -->
+<main id="page-main" class="page active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <div class="hero-badge">🌱 친환경 인증 상품 모음</div>
+          <h1 class="hero-title">지구를 위한 선택,<br>오늘부터 시작하세요.</h1>
+          <p class="hero-sub">탄소발자국을 줄이는 착한 소비, 검증된 친환경 브랜드만 모았습니다.</p>
+          <div class="hero-actions">
+            <a class="btn-hero-primary" href="#" onclick="goPage('product');return false">쇼핑 시작하기 →</a>
+            <a class="btn-hero-secondary" href="#" onclick="goPage('community');return false">커뮤니티 보기</a>
+          </div>
+          <div class="hero-stats">
+            <div><div class="hero-stat-val">2,800+</div><div class="hero-stat-lbl">친환경 인증 상품</div></div>
+            <div><div class="hero-stat-val">48k</div><div class="hero-stat-lbl">활성 회원</div></div>
+            <div><div class="hero-stat-val">12t</div><div class="hero-stat-lbl">절감한 CO₂</div></div>
+          </div>
+        </div>
+        <div class="hero-deco">
+          <div class="hero-deco-c"></div>
+          <div class="hero-deco-c"></div>
+          <div class="hero-dots">
+            <span class="hero-dot on"></span><span class="hero-dot"></span><span class="hero-dot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category -->
+  <div class="cat-section">
+    <div class="container">
+      <div class="cat-grid">
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-house-chimney"></i></div><div class="cat-name">생활용품</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-bowl-food"></i></div><div class="cat-name">식품</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-spray-can-sparkles"></i></div><div class="cat-name">뷰티</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-shirt"></i></div><div class="cat-name">패션</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-display"></i></div><div class="cat-name">가전</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-hammer"></i></div><div class="cat-name">DIY</div></div>
+        <div class="cat-item"><div class="cat-icon"><i class="fa-solid fa-baby"></i></div><div class="cat-name">유아동</div></div>
+        <div class="cat-item"><div class="cat-icon">···</div><div class="cat-name">더보기</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Products -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">🏆 베스트셀러</h2>
+        <a class="section-more" href="#" onclick="goPage('product');return false">전체보기 →</a>
+      </div>
+      <div class="prod-grid">
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/칫솔1.jpg" alt="대나무 칫솔 세트">  
+            <div class="prod-badge-wrap">
+              <span class="eco-tag">FSC인증</span>
+            </div>
+          </div>
+          <div class="prod-body"><div class="prod-name">대나무 칫솔 패밀리 세트</div><div class="prod-brand">EcoLife</div><div class="prod-price-row"><span class="pct">15%</span><span class="price">9,900원</span><span class="orig">11,600원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/수세미.jpg" alt="천연 수세미">
+            <div class="prod-badge-wrap">
+              <span class="eco-tag">유기농</span></div></div>
+          <div class="prod-body"><div class="prod-name">천연 수세미 3P</div><div class="prod-brand">그린홈</div><div class="prod-price-row"><span class="pct">20%</span><span class="price">7,200원</span><span class="orig">9,000원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/에코백.jpg" alt="에코백">
+            <div class="prod-badge-wrap"><span class="eco-tag">재활용소재</span></div></div>
+          <div class="prod-body"><div class="prod-name">리사이클 에코백</div><div class="prod-brand">서스테인</div><div class="prod-price-row"><span class="pct">10%</span><span class="price">18,000원</span><span class="orig">20,000원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/친환경 세제.jpg" alt="친환경 세제">
+            <div class="prod-badge-wrap"><span class="eco-tag">KC인증</span></div></div>
+          <div class="prod-body"><div class="prod-name">무향 친환경 세제</div><div class="prod-brand">퓨어홈</div><div class="prod-price-row"><span class="pct">25%</span><span class="price">13,500원</span><span class="orig">18,000원</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- New arrivals -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">🌱 신상품</h2>
+        <a class="section-more" href="#" onclick="goPage('product');return false">전체보기 →</a>
+      </div>
+      <div class="prod-grid">
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/고체샴푸바.jpg" alt="샴푸 바">
+            <div class="prod-badge-wrap"><span class="eco-tag">비건</span></div></div>
+          <div class="prod-body"><div class="prod-name">고체 샴푸 바</div><div class="prod-brand">퓨어네이처</div><div class="prod-price-row"><span class="pct">NEW</span><span class="price">14,900원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/쌀겨2.jpg" alt="주방 세제">
+            <div class="prod-badge-wrap"><span class="eco-tag">유기농</span></div></div>
+          <div class="prod-body"><div class="prod-name">쌀겨 주방세제</div><div class="prod-brand">에코키친</div><div class="prod-price-row"><span class="pct">NEW</span><span class="price">8,500원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+            <img src="image/수세미2.jpg" alt="섬유 수세미">
+            <div class="prod-badge-wrap"><span class="eco-tag">FSC인증</span></div></div>
+          <div class="prod-body"><div class="prod-name">대나무 섬유 수세미</div><div class="prod-brand">그린패밀리</div><div class="prod-price-row"><span class="pct">NEW</span><span class="price">6,900원</span></div></div>
+        </div>
+        <div class="prod-card" onclick="goPage('product')">
+          <div class="prod-img">
+           <img src="image/레몬.jpg" alt="탈취제"> 
+            <div class="prod-badge-wrap"><span class="eco-tag">천연성분</span></div></div>
+          <div class="prod-body"><div class="prod-name">레몬 천연 탈취제</div><div class="prod-brand">클린에어</div><div class="prod-price-row"><span class="pct">NEW</span><span class="price">11,000원</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Community preview -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">💬 커뮤니티 인기글</h2>
+        <a class="section-more" href="#" onclick="goPage('community');return false">더보기 →</a>
+      </div>
+      <div class="comm-grid">
+        <div class="comm-card" onclick="goPage('community')">
+          <div class="comm-cat">사용후기</div>
+          <div class="comm-title">대나무 칫솔 2달 사용기, 생각보다 훨씬 좋아요</div>
+          <div class="comm-meta"><span>♥ 142</span><span>💬 38</span><span>👁 1,204</span></div>
+        </div>
+        <div class="comm-card" onclick="goPage('community')">
+          <div class="comm-cat">친환경 팁</div>
+          <div class="comm-title">집에서 쉽게 실천하는 제로웨이스트 10가지</div>
+          <div class="comm-meta"><span>♥ 89</span><span>💬 21</span><span>👁 3,571</span></div>
+        </div>
+        <div class="comm-card" onclick="goPage('community')">
+          <div class="comm-cat">Q&A</div>
+          <div class="comm-title">밀랍랩 vs 실리콘 덮개, 어떤 게 더 실용적일까요?</div>
+          <div class="comm-meta"><span>♥ 57</span><span>💬 44</span><span>👁 892</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ PRODUCT PAGE ═══════════════ -->
+<main id="page-product" class="page">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="#" onclick="goPage('main');return false">홈</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="#">생활용품</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-cur">대나무 칫솔 패밀리 세트</span>
+    </div>
+    <div class="pd-layout">
+      <!-- Gallery -->
+      <div class="pd-gallery">
+        <div class="pd-main-img"><img src="image/칫솔1.jpg" alt="대나무 칫솔 세트"></div>
+        <div class="pd-thumbs">
+          <div class="pd-thumb active" onclick="selectThumb(this)">🌿</div>
+          <div class="pd-thumb" onclick="selectThumb(this)">📦</div>
+          <div class="pd-thumb" onclick="selectThumb(this)">✅</div>
+          <div class="pd-thumb" onclick="selectThumb(this)">🔬</div>
+        </div>
+      </div>
+      <!-- Info -->
+      <div class="pd-info">
+        <div class="eco-badges">
+          <span class="eco-badge">🏅 FSC 인증</span>
+          <span class="eco-badge">🌿 유기농</span>
+          <span class="eco-badge">♻️ 생분해 가능</span>
+        </div>
+        <div class="pd-brand">EcoLife · 생활용품</div>
+        <h1 class="pd-name">대나무 칫솔 패밀리 세트 (4입)</h1>
+        <div class="pd-rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-val">4.8</span>
+          <span class="rating-cnt">(리뷰 234개)</span>
+        </div>
+        <div class="price-block">
+          <div class="price-top">
+            <span class="disc-badge">20% 할인</span>
+            <span class="deadline-tag">⏰ 오늘 마감</span>
+          </div>
+          <div class="sale-price">15,900원</div>
+          <div class="orig-price">정가 19,900원 · 4,000원 절약</div>
+        </div>
+        <div class="option-section">
+          <div class="opt-title">색상 선택</div>
+          <div class="opt-btns" id="opt-color">
+            <button class="opt-btn active" onclick="selectOpt(this,'opt-color')">내추럴</button>
+            <button class="opt-btn" onclick="selectOpt(this,'opt-color')">블랙</button>
+            <button class="opt-btn" onclick="selectOpt(this,'opt-color')">옐로우</button>
+          </div>
+        </div>
+        <div class="option-section">
+          <div class="opt-title">수량 선택</div>
+          <div class="qty-section">
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <span class="qty-val" id="qty-val">1</span>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+            <span class="qty-stock">재고 47개</span>
+          </div>
+        </div>
+        <div class="pd-actions">
+          <button class="btn-buy" onclick="showToast('주문서 페이지로 이동합니다')">바로 구매</button>
+          <button class="btn-cart" onclick="showToast('장바구니에 담았습니다')">장바구니</button>
+          <button class="btn-wish" id="wishBtn" onclick="toggleWish()">♡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product tabs -->
+    <div class="pd-tabs">
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab(this,'pd-tab-detail')">상세 설명</button>
+        <button class="tab-btn" onclick="switchTab(this,'pd-tab-eco')">친환경 지표</button>
+        <button class="tab-btn" onclick="switchTab(this,'pd-tab-ship')">배송/반품</button>
+        <button class="tab-btn" onclick="switchTab(this,'pd-tab-review')">리뷰 (234)</button>
+      </div>
+      <div id="pd-tab-detail" class="tab-panel active">
+        <div class="eco-metrics">
+          <div class="eco-metric"><div class="eco-val">2.3 kg</div><div class="eco-lbl">CO₂ 절감량</div></div>
+          <div class="eco-metric"><div class="eco-val">100%</div><div class="eco-lbl">생분해 포장재</div></div>
+          <div class="eco-metric"><div class="eco-val">FSC</div><div class="eco-lbl">인증 등급</div></div>
+        </div>
+        <p style="font-size:14px;color:var(--sd);line-height:1.8">자연에서 자란 대나무로 만든 칫솔로, 일반 플라스틱 칫솔 대비 CO₂ 2.3kg을 절감합니다. 손잡이는 100% 생분해 가능한 대나무 소재이며, 모든 포장재는 재활용 가능합니다. FSC 인증을 획득한 지속가능한 방식으로 생산됩니다.</p>
+      </div>
+      <div id="pd-tab-eco" class="tab-panel">
+        <div class="eco-metrics">
+          <div class="eco-metric"><div class="eco-val">2.3 kg</div><div class="eco-lbl">CO₂ 절감량</div></div>
+          <div class="eco-metric"><div class="eco-val">100%</div><div class="eco-lbl">생분해 가능</div></div>
+          <div class="eco-metric"><div class="eco-val">0개</div><div class="eco-lbl">플라스틱 부품</div></div>
+        </div>
+        <p style="font-size:14px;color:var(--sd);line-height:1.8">이 제품의 탄소발자국은 기존 플라스틱 칫솔 대비 78% 낮으며, 제조 과정에서 재생에너지 100%를 사용합니다.</p>
+      </div>
+      <div id="pd-tab-ship" class="tab-panel">
+        <p style="font-size:14px;color:var(--sd);line-height:1.9"><strong>배송 안내</strong><br>• 3만원 이상 구매 시 무료배송<br>• 평균 2~3 영업일 이내 도착<br>• 제주/도서 지역 추가 배송비 3,000원<br><br><strong>반품/교환</strong><br>• 수령 후 7일 이내 미사용 상품 반품 가능<br>• 단순 변심 반품 시 왕복 배송비 고객 부담</p>
+      </div>
+      <div id="pd-tab-review" class="tab-panel">
+        <div class="rev-summary">
+          <div>
+            <div class="rev-big">4.8</div>
+            <div class="stars" style="font-size:18px">★★★★★</div>
+            <div style="font-size:12px;color:var(--s);margin-top:4px">234개 리뷰</div>
+          </div>
+          <div class="rev-bars">
+            <div class="rev-row"><div class="rev-stars-sm">★★★★★</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:70%"></div></div><div class="rev-n">164</div></div>
+            <div class="rev-row"><div class="rev-stars-sm">★★★★</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:20%;background:var(--pl)"></div></div><div class="rev-n">47</div></div>
+            <div class="rev-row"><div class="rev-stars-sm">★★★</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:7%;background:var(--pl)"></div></div><div class="rev-n">16</div></div>
+            <div class="rev-row"><div class="rev-stars-sm">★★</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:2%;background:var(--sp)"></div></div><div class="rev-n">5</div></div>
+            <div class="rev-row"><div class="rev-stars-sm">★</div><div class="rev-bar-bg"><div class="rev-bar-fill" style="width:1%;background:var(--sp)"></div></div><div class="rev-n">2</div></div>
+          </div>
+        </div>
+        <div class="rev-card">
+          <div class="rev-header"><div class="rev-user">이*현 <span class="rev-verified">구매확인</span></div><span class="rev-date">2025.04.12</span></div>
+          <div class="stars" style="font-size:13px;margin-bottom:5px">★★★★★</div>
+          <p class="rev-text">아이 칫솔로 구매했는데 부드럽고 사용감이 좋아요. 포장도 종이라서 환경에 대한 걱정 없이 쓸 수 있어서 만족합니다.</p>
+        </div>
+        <div class="rev-card">
+          <div class="rev-header"><div class="rev-user">박*수 <span class="rev-verified">구매확인</span></div><span class="rev-date">2025.03.28</span></div>
+          <div class="stars" style="font-size:13px;margin-bottom:5px">★★★★</div>
+          <p class="rev-text">가족 모두 사용 중입니다. 처음엔 대나무 칫솔이 어색했는데 금방 적응됐어요. 다음에도 재구매할 예정입니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════════ SHOP PAGE ═══════════════ -->
+<main id="page-shop" class="page">
+
+  <!-- 카테고리 탭바 -->
+  <div class="shop-topbar">
+    <div class="shop-topbar-inner">
+      <div class="shop-cat-tab active" onclick="shopSelectTab(this)">전체</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">생활용품</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">식품</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">뷰티</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">패션</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">가전</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">DIY</div>
+      <div class="shop-cat-tab" onclick="shopSelectTab(this)">유아동</div>
+    </div>
+  </div>
+
+  <!-- 필터 오버레이 (모바일) -->
+  <div class="filter-overlay" id="filterOverlay" onclick="closeFilterDrawer()"></div>
+  <div class="shop-filter-drawer" id="filterDrawer">
+    <div class="filter-drawer-head">
+      <span style="font-size:15px;font-weight:700;color:var(--pd)">필터</span>
+      <button class="filter-drawer-close" onclick="closeFilterDrawer()">✕</button>
+    </div>
+    <!-- 드로어 내부 = 사이드바와 동일 내용 -->
+    <div id="filterDrawerBody"></div>
+  </div>
+
+  <div class="shop-layout">
+
+    <!-- ── 필터 사이드바 ── -->
+    <aside class="shop-filter" id="shopFilterSidebar">
+      <div class="filter-head">
+        <span class="filter-title">필터</span>
+        <span class="filter-reset" onclick="resetFilters()">
+          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          초기화
+        </span>
+      </div>
+
+      <!-- 인증 필터 -->
+      <div class="filter-section" id="fs-cert">
+        <div class="filter-section-head" onclick="toggleFilterSection('fs-cert')">
+          <span class="filter-section-title">인증</span>
+          <span class="filter-toggle-icon">︿</span>
+        </div>
+        <div class="filter-body">
+          <div class="filter-item checked" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">FSC 인증</span>
+            <span class="filter-count">342</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">KC 인증</span>
+            <span class="filter-count">218</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">유기농 인증</span>
+            <span class="filter-count">167</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">비건 인증</span>
+            <span class="filter-count">94</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">생분해 가능</span>
+            <span class="filter-count">128</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 카테고리 필터 -->
+      <div class="filter-section" id="fs-cat">
+        <div class="filter-section-head" onclick="toggleFilterSection('fs-cat')">
+          <span class="filter-section-title">카테고리</span>
+          <span class="filter-toggle-icon">︿</span>
+        </div>
+        <div class="filter-body">
+          <div class="filter-item checked" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">생활용품</span>
+            <span class="filter-count">538</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">식품</span>
+            <span class="filter-count">259</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">뷰티</span>
+            <span class="filter-count">189</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">패션</span>
+            <span class="filter-count">163</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">가전</span>
+            <span class="filter-count">106</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">DIY</span>
+            <span class="filter-count">94</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">유아동</span>
+            <span class="filter-count">85</span>
+          </div>
+          <div class="filter-more" onclick="showToast('카테고리 더보기')">
+            카테고리 더보기 ›
+          </div>
+        </div>
+      </div>
+
+      <!-- 가격 필터 -->
+      <div class="filter-section" id="fs-price">
+        <div class="filter-section-head" onclick="toggleFilterSection('fs-price')">
+          <span class="filter-section-title">가격</span>
+          <span class="filter-toggle-icon">︿</span>
+        </div>
+        <div class="filter-body">
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">5,000원 미만</span>
+            <span class="filter-count">199</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">5,000 ~ 10,000원</span>
+            <span class="filter-count">456</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">10,000 ~ 25,000원</span>
+            <span class="filter-count">503</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">25,000원 이상</span>
+            <span class="filter-count">197</span>
+          </div>
+          <div class="price-range-wrap" style="margin-top:12px">
+            <div class="price-inputs">
+              <div class="price-input-box">
+                <input type="number" placeholder="최소" id="price-min">
+              </div>
+              <span class="price-sep">~</span>
+              <div class="price-input-box">
+                <input type="number" placeholder="최대" id="price-max">
+              </div>
+            </div>
+            <button class="price-apply-btn" onclick="showToast('가격 필터가 적용됐습니다')">적용</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 브랜드 필터 -->
+      <div class="filter-section" id="fs-brand">
+        <div class="filter-section-head" onclick="toggleFilterSection('fs-brand')">
+          <span class="filter-section-title">브랜드</span>
+          <span class="filter-toggle-icon">︿</span>
+        </div>
+        <div class="filter-body">
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">EcoLife</span>
+            <span class="filter-count">142</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">그린홈</span>
+            <span class="filter-count">98</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">서스테인</span>
+            <span class="filter-count">76</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">퓨어홈</span>
+            <span class="filter-count">64</span>
+          </div>
+          <div class="filter-item" onclick="toggleFilter(this)">
+            <div class="filter-check"></div>
+            <span class="filter-label">클린에어</span>
+            <span class="filter-count">51</span>
+          </div>
+          <div class="filter-more" onclick="showToast('브랜드 더보기')">
+            브랜드 더보기 ›
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── 상품 메인 영역 ── -->
+    <div class="shop-main">
+
+      <!-- 모바일 필터 버튼 -->
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <button class="shop-filter-toggle-btn" onclick="openFilterDrawer()">
+          ☰ 필터
+        </button>
+      </div>
+
+      <!-- 툴바: 결과 수 + 정렬 -->
+      <div class="shop-toolbar">
+        <div class="shop-result-count">총 <strong>1,355</strong>건</div>
+        <div class="shop-sort-tabs">
+          <span class="sort-tab active" onclick="shopSort(this)">추천순</span>
+          <span class="sort-tab" onclick="shopSort(this)">신상품순</span>
+          <span class="sort-tab" onclick="shopSort(this)">판매량순</span>
+          <span class="sort-tab" onclick="shopSort(this)">혜택순</span>
+          <span class="sort-tab" onclick="shopSort(this)">높은 가격순</span>
+          <span class="sort-tab" onclick="shopSort(this)">낮은 가격순</span>
+        </div>
+      </div>
+
+      <!-- 상품 그리드 -->
+      <div class="shop-prod-grid">
+
+        <!-- 상품 1 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🌿</div>
+            <div class="sp-badge">FSC인증</div>
+            <div class="sp-badge amber" style="top:36px">15% 할인</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">대나무 칫솔 패밀리 세트 (4입) — 부드러운 모와 생분해 손잡이</div>
+            <div class="sp-desc">자연에서 온 소재, 지구를 위한 선택</div>
+            <div class="sp-price-row">
+              <span class="sp-orig">11,600원</span>
+              <span class="sp-pct">15%</span>
+              <span class="sp-price">9,900원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★★</span> 4.8 (234)</div>
+          </div>
+        </div>
+
+        <!-- 상품 2 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">♻️</div>
+            <div class="sp-badge">유기농</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">천연 수세미 3P 세트 — 100% 자연 섬유 소재</div>
+            <div class="sp-desc">플라스틱 없이 주방을 깨끗하게</div>
+            <div class="sp-price-row">
+              <span class="sp-orig">9,000원</span>
+              <span class="sp-pct">20%</span>
+              <span class="sp-price">7,200원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★</span> 4.5 (187)</div>
+          </div>
+        </div>
+
+        <!-- 상품 3 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🛍️</div>
+            <div class="sp-badge">재활용소재</div>
+            <div class="sp-badge amber" style="top:36px">10% 할인</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">리사이클 에코백 — 페트병 재활용 원단 제작</div>
+            <div class="sp-desc">버려진 페트병이 세련된 가방으로</div>
+            <div class="sp-price-row">
+              <span class="sp-orig">20,000원</span>
+              <span class="sp-pct">10%</span>
+              <span class="sp-price">18,000원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★★</span> 4.9 (312)</div>
+          </div>
+        </div>
+
+        <!-- 상품 4 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">💧</div>
+            <div class="sp-badge">KC인증</div>
+            <div class="sp-badge red" style="top:36px">25% 할인</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">무향 친환경 주방세제 1L — 식물성 계면활성제</div>
+            <div class="sp-desc">아이가 있는 집에서도 안심하고 사용</div>
+            <div class="sp-price-row">
+              <span class="sp-orig">18,000원</span>
+              <span class="sp-pct">25%</span>
+              <span class="sp-price">13,500원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★</span> 4.6 (421)</div>
+          </div>
+        </div>
+
+        <!-- 상품 5 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🫧</div>
+            <div class="sp-badge blue">비건인증</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">고체 샴푸 바 — 비건 & 동물실험 없는 제품</div>
+            <div class="sp-desc">플라스틱 용기 없이 두피 케어</div>
+            <div class="sp-price-row">
+              <span class="sp-price">14,900원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★★</span> 4.7 (156)</div>
+          </div>
+        </div>
+
+        <!-- 상품 6 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🌾</div>
+            <div class="sp-badge">유기농</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">쌀겨 주방세제 500ml — 자연 유래 성분 100%</div>
+            <div class="sp-desc">국내산 쌀겨 추출 세정 성분</div>
+            <div class="sp-price-row">
+              <span class="sp-price">8,500원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★</span> 4.3 (98)</div>
+          </div>
+        </div>
+
+        <!-- 상품 7 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🪴</div>
+            <div class="sp-badge">FSC인증</div>
+            <div class="sp-badge amber" style="top:36px">NEW</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">코코넛 섬유 수세미 — 열대 농업 부산물 활용</div>
+            <div class="sp-desc">버려지는 코코넛 껍질로 만든 친환경 수세미</div>
+            <div class="sp-price-row">
+              <span class="sp-price">6,900원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★</span> 4.4 (73)</div>
+          </div>
+        </div>
+
+        <!-- 상품 8 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🍋</div>
+            <div class="sp-badge">천연성분</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">레몬 천연 탈취제 200ml — 화학 방향제 무첨가</div>
+            <div class="sp-desc">레몬 에센셜 오일로 자연스러운 향</div>
+            <div class="sp-price-row">
+              <span class="sp-price">11,000원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★★</span> 4.8 (201)</div>
+          </div>
+        </div>
+
+        <!-- 상품 9 -->
+        <div class="sp-card" onclick="goPage('product')">
+          <div class="sp-img-wrap">
+            <div class="sp-emoji">🧴</div>
+            <div class="sp-badge blue">비건인증</div>
+            <div class="sp-badge red" style="top:36px">30% 할인</div>
+            <button class="sp-wish" onclick="event.stopPropagation();toggleSpWish(this)">♡</button>
+            <div class="sp-cart-btn" onclick="event.stopPropagation();showToast('장바구니에 담았습니다 🛒')">🛒 장바구니 담기</div>
+          </div>
+          <div class="sp-body">
+            <div class="sp-delivery">🌱 친환경 배송</div>
+            <div class="sp-name">리필형 천연 핸드워시 300ml — 향료 무첨가 저자극</div>
+            <div class="sp-desc">리필 가능한 알루미늄 용기로 쓰레기 제로</div>
+            <div class="sp-price-row">
+              <span class="sp-orig">19,800원</span>
+              <span class="sp-pct">30%</span>
+              <span class="sp-price">13,860원</span>
+            </div>
+            <div class="sp-review"><span class="sp-review-stars">★★★★</span> 4.5 (119)</div>
+          </div>
+        </div>
+
+      </div><!-- /shop-prod-grid -->
+
+      <!-- 페이지네이션 -->
+      <div class="shop-pagination">
+        <button class="pg-btn arrow">‹</button>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn" onclick="shopPaging(this)">2</button>
+        <button class="pg-btn" onclick="shopPaging(this)">3</button>
+        <button class="pg-btn" onclick="shopPaging(this)">4</button>
+        <button class="pg-btn" onclick="shopPaging(this)">5</button>
+        <button class="pg-btn" style="color:var(--gray)">···</button>
+        <button class="pg-btn" onclick="shopPaging(this)">68</button>
+        <button class="pg-btn arrow">›</button>
+      </div>
+
+    </div><!-- /shop-main -->
+  </div><!-- /shop-layout -->
+</main>
+
+<!-- ═══════════════ COMMUNITY PAGE ═══════════════ -->
+<main id="page-community" class="page">
+  <div class="container">
+    <div class="comm-page-layout">
+      <!-- Sidebar -->
+      <aside class="comm-sidebar">
+        <button class="write-btn" onclick="showToast('글쓰기 페이지로 이동합니다 ✏️')">✏️ 글쓰기</button>
+        <div class="sidebar-title">카테고리</div>
+        <div class="sidebar-menu">
+          <div class="sidebar-item active" onclick="selectCat(this)">전체 <span class="sidebar-cnt">1,284</span></div>
+          <div class="sidebar-item" onclick="selectCat(this)">사용후기 <span class="sidebar-cnt">542</span></div>
+          <div class="sidebar-item" onclick="selectCat(this)">친환경 팁 <span class="sidebar-cnt">318</span></div>
+          <div class="sidebar-item" onclick="selectCat(this)">Q&amp;A <span class="sidebar-cnt">247</span></div>
+          <div class="sidebar-item" onclick="selectCat(this)">자유게시판 <span class="sidebar-cnt">177</span></div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">인기 태그</div>
+        <div class="tag-pills">
+          <span class="tag-pill">#제로웨이스트</span>
+          <span class="tag-pill">#비건</span>
+          <span class="tag-pill">#업사이클</span>
+          <span class="tag-pill">#탄소중립</span>
+          <span class="tag-pill">#친환경육아</span>
+        </div>
+      </aside>
+      <!-- Main -->
+      <div class="comm-main">
+        <!-- Mobile category tabs -->
+        <div style="display:none" class="mobile-only-cats">
+          <div style="display:flex;gap:4px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none">
+            <button style="white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--p);color:var(--white);flex-shrink:0">전체</button>
+            <button style="white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--sl);color:var(--sd);flex-shrink:0">사용후기</button>
+            <button style="white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--sl);color:var(--sd);flex-shrink:0">친환경 팁</button>
+            <button style="white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--sl);color:var(--sd);flex-shrink:0">Q&A</button>
+            <button style="white-space:nowrap;padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--sl);color:var(--sd);flex-shrink:0">자유</button>
+          </div>
+        </div>
+        <div class="comm-toolbar">
+          <div class="toolbar-search">
+            <span style="color:var(--s);font-size:15px">🔍</span>
+            <input type="text" placeholder="제목, 내용, 작성자 검색">
+          </div>
+          <select class="sort-select">
+            <option>최신순</option>
+            <option>인기순</option>
+            <option>댓글순</option>
+          </select>
+        </div>
+        <div class="notice-item">
+          <span class="notice-tag">공지</span>
+          <span class="notice-title">친환경 챌린지 이벤트 참여 방법 안내 (6월 한 달간)</span>
+          <span class="notice-date">2025.06.01</span>
+        </div>
+        <div class="post-list">
+          <div class="post-item">
+            <div class="post-body">
+              <div class="post-tags"><span class="p-cat">사용후기</span><span class="p-new">NEW</span></div>
+              <div class="post-title">밀랍 랩으로 바꾼 지 3개월, 비닐 사용량 0에 도전 중이에요</div>
+              <div class="post-excerpt">처음에는 반신반의했는데 막상 써보니 이렇게 편리할 수가 없어요. 냉장고 보관도 잘 되고 세척도 쉬워서 이제 비닐 랩은 완전히 끊었습니다.</div>
+              <div class="post-foot">
+                <div class="post-author"><div class="author-av">김</div><span class="author-name">김*영 · 2시간 전</span></div>
+                <div class="post-stats"><span class="post-stat">👁 1,204</span><span class="post-stat">♥ 142</span><span class="post-stat">💬 38</span></div>
+              </div>
+            </div>
+            <div class="post-thumb">🌿</div>
+          </div>
+          <div class="post-item">
+            <div class="post-body">
+              <div class="post-tags"><span class="p-cat">친환경 팁</span></div>
+              <div class="post-title">마트 장보기 할 때 포장재 줄이는 실전 꿀팁 모음</div>
+              <div class="post-excerpt">낱개 채소 고르기, 재사용 망사백 활용, 포장 없는 제품 위치 파악하기... 1년간 실천한 내용들을 정리해봤습니다.</div>
+              <div class="post-foot">
+                <div class="post-author"><div class="author-av">박</div><span class="author-name">박*준 · 1일 전</span></div>
+                <div class="post-stats"><span class="post-stat">👁 3,571</span><span class="post-stat">♥ 89</span><span class="post-stat">💬 21</span></div>
+              </div>
+            </div>
+            <div class="post-thumb">🛍️</div>
+          </div>
+          <div class="post-item">
+            <div class="post-body">
+              <div class="post-tags"><span class="p-cat">Q&A</span></div>
+              <div class="post-title">고체 샴푸 처음 써보는데 두피가 간지러운 게 정상인가요?</div>
+              <div class="post-excerpt">전환 초기에 두피 트러블이 생길 수 있다고 하던데, 얼마나 지속되는지 경험 있으신 분 계신가요?</div>
+              <div class="post-foot">
+                <div class="post-author"><div class="author-av">이</div><span class="author-name">이*수 · 3일 전</span></div>
+                <div class="post-stats"><span class="post-stat">👁 892</span><span class="post-stat">♥ 57</span><span class="post-stat">💬 44</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="post-item">
+            <div class="post-body">
+              <div class="post-tags"><span class="p-cat">자유게시판</span></div>
+              <div class="post-title">드디어 분리수거함 시스템 완성했어요! 공유합니다 🎉</div>
+              <div class="post-excerpt">6개월 고민 끝에 우리 집 분리수거 동선을 완전히 바꿨습니다. 일반 쓰레기 발생량이 절반으로 줄었어요.</div>
+              <div class="post-foot">
+                <div class="post-author"><div class="author-av">최</div><span class="author-name">최*진 · 5일 전</span></div>
+                <div class="post-stats"><span class="post-stat">👁 2,109</span><span class="post-stat">♥ 201</span><span class="post-stat">💬 67</span></div>
+              </div>
+            </div>
+            <div class="post-thumb">♻️</div>
+          </div>
+        </div>
+        <div class="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">···</button>
+          <button class="page-btn">12</button>
+          <button class="page-btn">›</button>
+        </div>
+        <!-- Mobile FAB -->
+        <div style="display:none;text-align:center;padding:8px 0 16px" id="mob-write-wrap">
+          <button onclick="showToast('글쓰기 페이지로 이동합니다 ✏️')" style="background:var(--a);color:var(--ak);font-weight:700;font-size:13px;padding:12px 32px;border-radius:var(--r-md);box-shadow:0 4px 12px rgba(233,196,106,.35)">✏️ 글쓰기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Evergreen</div>
+        <p class="footer-desc">검증된 친환경 브랜드만을 모아 지속가능한 소비문화를 만들어 갑니다.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">쇼핑</div>
+        <a class="footer-link" href="#">전체 상품</a>
+        <a class="footer-link" href="#">신상품</a>
+        <a class="footer-link" href="#">베스트셀러</a>
+        <a class="footer-link" href="#">친환경 인증</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">커뮤니티</div>
+        <a class="footer-link" href="#">사용후기</a>
+        <a class="footer-link" href="#">친환경 팁</a>
+        <a class="footer-link" href="#">Q&A</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">고객지원</div>
+        <a class="footer-link" href="#">공지사항</a>
+        <a class="footer-link" href="#">자주 묻는 질문</a>
+        <a class="footer-link" href="#">이용약관</a>
+        <a class="footer-link" href="#">개인정보처리방침</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Evergreen Inc. All rights reserved.</div>
+      <div class="footer-sns">
+        <a class="sns-btn" href="#">📘</a>
+        <a class="sns-btn" href="#">📸</a>
+        <a class="sns-btn" href="#">🐦</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile bottom nav -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <div class="mnav-item active" id="mnav-main" onclick="goPage('main')"><div class="mnav-icon"><i class="fa-solid fa-house-chimney"></i></div>홈</div>
+    <div class="mnav-item" onclick="showToast('카테고리 페이지')"><div class="mnav-icon"><i class="fa-solid fa-cart-shopping"></i></div>카테고리</div>
+    <div class="mnav-item" onclick="showToast('찜 목록 페이지')"><div class="mnav-icon">♡</div>찜</div>
+    <div class="mnav-item" id="mnav-comm" onclick="goPage('community')"><div class="mnav-icon"><i class="fa-solid fa-users"></i></div>커뮤니티</div>
+    <div class="mnav-item" onclick="showToast('마이페이지')"><div class="mnav-icon"><i class="fa-solid fa-circle-user"></i></div>마이페이지</div>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Page navigation ───────────────────────
+const PAGES = ['main','product','community','shop'];
+function goPage(id) {
+  PAGES.forEach(p => {
+    document.getElementById('page-'+p).classList.toggle('active', p===id);
+  });
+  // GNB active
+  document.querySelectorAll('.gnb-link[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page===id);
+  });
+  // Drawer active
+  document.querySelectorAll('.drawer-link').forEach(a => a.classList.remove('active'));
+  // Mobile nav
+  ['main','comm'].forEach(k => {
+    const el = document.getElementById('mnav-'+k);
+    if(el) el.classList.toggle('active',
+      (k==='main'&&id==='main')||(k==='comm'&&id==='community'));
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Mobile community write btn
+  const mobWrite = document.getElementById('mob-write-wrap');
+  if(mobWrite) mobWrite.style.display = id==='community' && window.innerWidth<=744 ? 'block' : 'none';
+}
+
+// ── Shop: 카테고리 탭 ─────────────────────
+function shopSelectTab(el) {
+  document.querySelectorAll('.shop-cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Shop: 정렬 탭 ─────────────────────────
+function shopSort(el) {
+  document.querySelectorAll('.sort-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Shop: 페이지네이션 ────────────────────
+function shopPaging(el) {
+  document.querySelectorAll('.pg-btn:not(.arrow)').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Shop: 찜 버튼 ─────────────────────────
+function toggleSpWish(btn) {
+  const on = btn.classList.toggle('on');
+  btn.textContent = on ? '♥' : '♡';
+  showToast(on ? '찜 목록에 추가됐습니다 ❤️' : '찜 목록에서 제거됐습니다');
+}
+
+// ── Shop: 필터 체크박스 ───────────────────
+function toggleFilter(el) {
+  el.classList.toggle('checked');
+}
+
+// ── Shop: 필터 섹션 접기/펼치기 ──────────
+function toggleFilterSection(id) {
+  document.getElementById(id).classList.toggle('collapsed');
+}
+
+// ── Shop: 필터 초기화 ─────────────────────
+function resetFilters() {
+  document.querySelectorAll('.filter-item').forEach(f => f.classList.remove('checked'));
+  showToast('필터가 초기화됐습니다');
+}
+
+// ── Shop: 모바일 필터 드로어 ─────────────
+function openFilterDrawer() {
+  document.getElementById('filterOverlay').classList.add('open');
+  const drawer = document.getElementById('filterDrawer');
+  drawer.classList.add('open');
+  // 사이드바 내용 복사
+  const body = document.getElementById('filterDrawerBody');
+  if (!body.children.length) {
+    body.innerHTML = document.getElementById('shopFilterSidebar').innerHTML;
+  }
+}
+function closeFilterDrawer() {
+  document.getElementById('filterOverlay').classList.remove('open');
+  document.getElementById('filterDrawer').classList.remove('open');
+}
+
+// ── Hamburger / drawer ────────────────────
+function toggleDrawer() {
+  const d = document.getElementById('mobileDrawer');
+  const h = document.getElementById('hamburger');
+  d.classList.toggle('open');
+  h.classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+// ── Tab switching ─────────────────────────
+function switchTab(btn, panelId) {
+  const nav = btn.closest('.tab-nav');
+  nav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const tabs = btn.closest('.pd-tabs') || btn.closest('.page');
+  tabs.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ── Option select ─────────────────────────
+function selectOpt(btn, groupId) {
+  document.getElementById(groupId).querySelectorAll('.opt-btn')
+    .forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Quantity ──────────────────────────────
+function changeQty(d) {
+  const el = document.getElementById('qty-val');
+  let v = parseInt(el.textContent) + d;
+  if(v < 1) v = 1;
+  if(v > 99) v = 99;
+  el.textContent = v;
+}
+
+// ── Thumbnail ─────────────────────────────
+function selectThumb(el) {
+  el.closest('.pd-thumbs').querySelectorAll('.pd-thumb')
+    .forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Wish ──────────────────────────────────
+function toggleWish() {
+  const btn = document.getElementById('wishBtn');
+  const on = btn.classList.toggle('on');
+  btn.textContent = on ? '♥' : '♡';
+  showToast(on ? '찜 목록에 추가됐습니다 ❤️' : '찜 목록에서 제거됐습니다');
+}
+
+// ── Category sidebar ──────────────────────
+function selectCat(el) {
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Toast ─────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Responsive community ──────────────────
+function checkMobile() {
+  const isMob = window.innerWidth <= 744;
+  const mobCats = document.querySelector('.mobile-only-cats');
+  if(mobCats) mobCats.style.display = isMob ? 'block' : 'none';
+}
+window.addEventListener('resize', checkMobile);
+checkMobile();
+</script>
+</body>
+</html>
